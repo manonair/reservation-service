@@ -10,5 +10,8 @@ public class RestaurantVO {
 	private String restaurantName;
 
 	private String status;
+	
+	java.util.Set<TablesVO> tablesVOs;
+	
 
 }

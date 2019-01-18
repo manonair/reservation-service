@@ -1,10 +1,13 @@
 package com.mt.restaurant;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -18,10 +21,6 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "restaurantId")
 public class Restaurant implements java.io.Serializable{
 	 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1022908280713606265L;
 	@Column(name = "RESTAURANT_ID", nullable = false)
 	@Id
@@ -35,7 +34,10 @@ public class Restaurant implements java.io.Serializable{
 	/**
 	 */
 
-	@Column(name = "STATUS", length = 10)
+	@Column(name = "STATUS", length = 1)
 	String status;
 	
+	
+	@OneToMany(mappedBy = "restaurant", cascade = { CascadeType.REMOVE }, fetch = FetchType.LAZY)
+	java.util.Set<Tables> tables;
 }

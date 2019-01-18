@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-public class ReservationApplication {
+public class RestaurantApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ReservationApplication.class, args);
+		SpringApplication.run(RestaurantApplication.class, args);
 	}
 
 }
