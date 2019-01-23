@@ -1,4 +1,4 @@
-package com.mt.restaurant;
+package com.mt.restaurant.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

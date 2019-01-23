@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 public class RosterServerConfig   
 {
 
-
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {

@@ -1,4 +1,4 @@
-package com.mt.restaurant;
+package com.mt.restaurant.vo;
 
 import java.util.Calendar;
 

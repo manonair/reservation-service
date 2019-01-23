@@ -1,4 +1,4 @@
-package com.mt.restaurant;
+package com.mt.restaurant.service;
 
 import java.util.List;
 import java.util.Set;
@@ -10,11 +10,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mt.restaurant.mapper.RestaurantMapper;
+import com.mt.restaurant.mapper.TablesMapper;
+import com.mt.restaurant.model.Restaurant;
+import com.mt.restaurant.model.Tables;
+import com.mt.restaurant.repository.RestaurantRepository;
+import com.mt.restaurant.repository.TablesRepository;
+import com.mt.restaurant.vo.RestaurantVO;
+import com.mt.restaurant.vo.TablesVO;
+
 @Service
 public class RestaurantService {
 
 	@Autowired
-	private RestaurantRepository repository ;
+	private RestaurantRepository restaurantRepository ;
 
 	@Autowired
 	private TablesRepository tablesRepository;
@@ -31,7 +40,7 @@ public class RestaurantService {
 
 	public RestaurantVO findById(Integer restaurantId) {
 		RestaurantVO vo = null;
-		Restaurant  restaurant = repository.findRestaurantWithTableDetails(restaurantId);
+		Restaurant  restaurant = restaurantRepository.findRestaurantWithTableDetails(restaurantId);
 		
 		if (null!=restaurant) {
 			vo = mapper.maptoRestaurantVO(restaurant);
@@ -44,7 +53,7 @@ public class RestaurantService {
 
 	public List<RestaurantVO> findAll() throws Exception {
 		List<RestaurantVO> vos = null;
-		List<Restaurant> restaurants = (List<Restaurant>) repository.findAll();
+		List<Restaurant> restaurants = (List<Restaurant>) restaurantRepository.findAll();
 		LOGGER.info(" get RestaurantVO   result size: ", restaurants.size());
 		if (!restaurants.isEmpty()) {
 			vos = restaurants.stream().map(obj -> mapToRestaurantVO(obj)).collect(Collectors.toList());
@@ -55,7 +64,7 @@ public class RestaurantService {
 	
 	public List<RestaurantVO> findRestaurantTableDetails() throws Exception {
 		List<RestaurantVO> vos = null;
-		List<Restaurant> restaurants = (List<Restaurant>) repository.findAll();
+		List<Restaurant> restaurants = (List<Restaurant>) restaurantRepository.findAll();
 		LOGGER.info(" get RestaurantVO   result size: ", restaurants.size());
 		if (!restaurants.isEmpty()) {
 			vos = restaurants.stream().map(obj -> mapToRestaurantVO(obj)).collect(Collectors.toList());
@@ -64,8 +73,11 @@ public class RestaurantService {
 	}
 	
 	
+	
+	
 	private RestaurantVO mapToRestaurantVO(Restaurant restaurant) {
-		RestaurantVO vo = mapper.maptoRestaurantVO(restaurant);
+		RestaurantVO vo=null; 
+		vo = mapper.maptoRestaurantVO(restaurant);
 		if(!CollectionUtils.isEmpty(restaurant.getTables())) {
 			Set<TablesVO> tabels = mapper.maptoTablesVOs(restaurant.getTables());
 			vo.setTablesVOs(tabels);
@@ -84,6 +96,17 @@ public class RestaurantService {
 			vos = tables.stream().map(obj -> tablesMapper.maptoTablesVO(obj)).collect(Collectors.toList());
 		}
 		return vos;
+	}
+
+	public Integer createRestaurant(RestaurantVO restaurantVO) {
+		Restaurant entity= mapper.mapVOtoRestaurant(restaurantVO);
+		entity=restaurantRepository.saveAndFlush(entity);
+		return entity.getRestaurantId();
+	}
+
+	public Boolean deleteRestaurant(Integer restaurantId) {
+		 restaurantRepository.delete(restaurantId);
+		return true;
 	}
 
 }
