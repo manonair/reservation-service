@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.mt.restaurant.mapper.RestaurantMapper;
 import com.mt.restaurant.mapper.TablesMapper;
 import com.mt.restaurant.model.Restaurant;
-import com.mt.restaurant.model.Tables;
 import com.mt.restaurant.repository.RestaurantRepository;
 import com.mt.restaurant.repository.TablesRepository;
 import com.mt.restaurant.vo.RestaurantVO;
@@ -24,9 +23,9 @@ public class RestaurantService {
 
 	@Autowired
 	private RestaurantRepository restaurantRepository ;
-
+/*
 	@Autowired
-	private TablesRepository tablesRepository;
+	private TablesRepository tablesRepository;*/
 	
 	@Autowired
 	RestaurantMapper mapper;
@@ -51,6 +50,7 @@ public class RestaurantService {
 		return vo;
 	}
 
+	
 	public List<RestaurantVO> findAll() throws Exception {
 		List<RestaurantVO> vos = null;
 		List<Restaurant> restaurants = (List<Restaurant>) restaurantRepository.findAll();
@@ -88,7 +88,7 @@ public class RestaurantService {
 	
 	
 	
-	public List<TablesVO> findAllTables() throws Exception {
+	/*public List<TablesVO> findAllTables() throws Exception {
 		List<TablesVO> vos = null;
 		List<Tables> tables = (List<Tables>) tablesRepository.findAll();
 		LOGGER.info(" get RestaurantVO   result size: ", tables.size());
@@ -96,7 +96,17 @@ public class RestaurantService {
 			vos = tables.stream().map(obj -> tablesMapper.maptoTablesVO(obj)).collect(Collectors.toList());
 		}
 		return vos;
-	}
+	}*/
+	
+	/*public List<TablesVO> findTablesByIds(List<Integer> ids) throws Exception {
+		List<TablesVO> vos = null;
+		List<Tables> tables = (List<Tables>) tablesRepository.findAll(ids);
+		LOGGER.info(" get RestaurantVO   result size: ", tables.size());
+		if (!tables.isEmpty()) {
+			vos = tables.stream().map(obj -> tablesMapper.maptoTablesVO(obj)).collect(Collectors.toList());
+		}
+		return vos;
+	}*/
 
 	public Integer createRestaurant(RestaurantVO restaurantVO) {
 		Restaurant entity= mapper.mapVOtoRestaurant(restaurantVO);

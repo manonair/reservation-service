@@ -48,7 +48,7 @@ public class RestaurantController {
 	}
 
 	
-	@RequestMapping(path = "/all}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(path = "/all", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<RestaurantVO>> getAllRestaurants() {
 		List<RestaurantVO> restaurants;
 		try {
@@ -59,7 +59,6 @@ public class RestaurantController {
 		return restaurants != null ? new ResponseEntity<List<RestaurantVO>>(restaurants, HttpStatus.OK) 
 	            : new ResponseEntity<List<RestaurantVO>>(HttpStatus.NO_CONTENT); 
 	}
-	
 	
 	@PostMapping("/add")
     public ResponseEntity<Integer>add(@RequestBody final RestaurantVO restaurantVO) {

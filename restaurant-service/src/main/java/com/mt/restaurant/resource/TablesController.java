@@ -48,6 +48,32 @@ public class TablesController {
 	}
 
 	
+	
+	/*@RequestMapping(path = "/{table_ids}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<TablesVO>> getTableByIds(@PathVariable("table_ids") List<Integer> tableIds) {
+		List<TablesVO> tablesVOs;
+		try {
+			tablesVOs = service.findByTableIds(tableIds);
+		} catch (Exception e) {
+			return new ResponseEntity<List<TablesVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return tablesVOs != null ? new ResponseEntity<List<TablesVO>>(tablesVOs, HttpStatus.OK) 
+	            : new ResponseEntity<List<TablesVO>>(HttpStatus.NO_CONTENT); 
+	}*/
+	
+//	@RequestMapping(path = "/{table_ids}", method = RequestMethod.post, produces = "application/json")
+	@PostMapping("/{table_ids}")
+	public ResponseEntity<List<TablesVO>> getAllTableByIds(@PathVariable List<Integer> ids) {
+		List<TablesVO> tables=null;
+		try {
+			tables = service.findByTableIds(ids);
+		} catch (Exception e) {
+			return new ResponseEntity<List<TablesVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return tables != null ? new ResponseEntity<List<TablesVO>>(tables, HttpStatus.OK) 
+	            : new ResponseEntity<List<TablesVO>>(HttpStatus.NO_CONTENT); 
+	}
+	
 	@RequestMapping(path = "/all", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<TablesVO>> getAllTables() {
 		List<TablesVO> tables;

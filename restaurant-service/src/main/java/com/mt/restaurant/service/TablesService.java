@@ -42,6 +42,17 @@ public class TablesService {
 		return mapToTablesVO(tables);
 	}
 
+	public List<TablesVO> findByTableIds(List<Integer> tableIds) throws Exception {
+		List<TablesVO> vos = null;
+		List<Tables> tablesList = (List<Tables>) tablesRepository.findAll(tableIds);
+		LOGGER.info(" get TablesVO   result size: ", tablesList.size());
+		if (!tablesList.isEmpty()) {
+			vos = tablesList.stream().map(obj -> mapToTablesVO(obj)).collect(Collectors.toList());
+		}
+		return vos;
+	}
+	
+	
 	public List<TablesVO> findAll() throws Exception {
 		List<TablesVO> vos = null;
 		List<Tables> tablesList = (List<Tables>) tablesRepository.findAll();

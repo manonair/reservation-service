@@ -1,4 +1,4 @@
-package com.mt.roster.service;
+package com.mt.reservation.vo;
 
 import java.util.Calendar;
 
