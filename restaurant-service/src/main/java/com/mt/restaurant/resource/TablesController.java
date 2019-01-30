@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mt.restaurant.service.TablesService;
+import com.mt.restaurant.vo.TableRequestVO;
 import com.mt.restaurant.vo.TablesVO;
 
 
@@ -35,7 +36,7 @@ public class TablesController {
 	@Autowired
 	private TablesService service;
 
-	@RequestMapping(path = "/{table_id}", method = RequestMethod.GET, produces = "application/json")
+	/*@RequestMapping(path = "/{table_id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<TablesVO> getTableById(@PathVariable("table_id") Integer id) {
 		TablesVO tablesVO;
 		try {
@@ -45,34 +46,23 @@ public class TablesController {
 		}
 		return tablesVO != null ? new ResponseEntity<TablesVO>(tablesVO, HttpStatus.OK) 
 	            : new ResponseEntity<TablesVO>(HttpStatus.NO_CONTENT); 
-	}
+	}*/
 
 	
 	
-	/*@RequestMapping(path = "/{table_ids}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<TablesVO>> getTableByIds(@PathVariable("table_ids") List<Integer> tableIds) {
-		List<TablesVO> tablesVOs;
-		try {
-			tablesVOs = service.findByTableIds(tableIds);
-		} catch (Exception e) {
-			return new ResponseEntity<List<TablesVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
-		}
-		return tablesVOs != null ? new ResponseEntity<List<TablesVO>>(tablesVOs, HttpStatus.OK) 
-	            : new ResponseEntity<List<TablesVO>>(HttpStatus.NO_CONTENT); 
-	}*/
-	
-//	@RequestMapping(path = "/{table_ids}", method = RequestMethod.post, produces = "application/json")
-	@PostMapping("/{table_ids}")
-	public ResponseEntity<List<TablesVO>> getAllTableByIds(@PathVariable List<Integer> ids) {
+//	@RequestMapping(path = "/{table_ids}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(path = "/tableIds", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<List<TablesVO>> getAllTableByIds(@RequestBody TableRequestVO request) {
 		List<TablesVO> tables=null;
 		try {
-			tables = service.findByTableIds(ids);
+			tables = service.findByTableIds(request.getIds());
 		} catch (Exception e) {
 			return new ResponseEntity<List<TablesVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
 		return tables != null ? new ResponseEntity<List<TablesVO>>(tables, HttpStatus.OK) 
 	            : new ResponseEntity<List<TablesVO>>(HttpStatus.NO_CONTENT); 
 	}
+	
 	
 	@RequestMapping(path = "/all", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<TablesVO>> getAllTables() {

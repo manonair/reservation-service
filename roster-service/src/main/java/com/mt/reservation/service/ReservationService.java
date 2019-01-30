@@ -1,5 +1,6 @@
 package com.mt.reservation.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.mt.reservation.mapper.TableReservationMapper;
 import com.mt.reservation.model.TableReservation;
 import com.mt.reservation.repository.TableReservationRepository;
+import com.mt.reservation.vo.TableRequestVO;
 import com.mt.reservation.vo.TableReservationVO;
 import com.mt.reservation.vo.TablesVO;
 
@@ -44,15 +46,18 @@ public class ReservationService {
 					.map(TableReservation::getTableId)
 					.collect(Collectors.toList());
 			
-			ParameterizedTypeReference response = new ParameterizedTypeReference<List<TablesVO>>(){};
-			
-			ResponseEntity<List<TablesVO>> responseEntity =restTemplate.getForObject("http://RESTAURANT-SERVICE/tables/",ResponseEntity.class,collect );
-			
+			ParameterizedTypeReference<List<TablesVO>> response = new ParameterizedTypeReference<List<TablesVO>>(){};
+	 
+	        TableRequestVO requestVO = new TableRequestVO();
+	        requestVO.setIds(collect);
+	        ResponseEntity<List> responseEntity= restTemplate.postForEntity("http://restaurant-service/tables/tableIds", requestVO, List.class);
 //					.getForObject("http://RESTAURANT-SERVICE/tables/",ResponseEntity.class,collect );
-			List<TablesVO> tables= responseEntity.getBody();
+	        List<TablesVO> tables= responseEntity.getBody();
 
-			Map<Integer, TablesVO> tableMap = tables.stream()
-					.collect(Collectors.toMap(TablesVO::getTableId, obj->obj));
+			Map<Integer, TablesVO> tableMap =new HashMap<Integer, TablesVO>();
+			/*tableMap.put(tables.getTableId(), tables);
+					tables.stream()
+					.collect(Collectors.toMap(TablesVO::getTableId, obj->obj));*/
 			
 			vos=reservations.stream().map(reservation->  mapToReservationVO(voMap.get(reservation.getTableReservationId()), tableMap.get(reservation.getTableId())))
 			.collect(Collectors.toList());
