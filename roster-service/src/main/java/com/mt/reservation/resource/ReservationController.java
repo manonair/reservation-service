@@ -47,7 +47,7 @@ public class ReservationController {
 	public ResponseEntity<RestaurantVO> getDataTransfer(@PathVariable("restaurant_id") Integer id) {
 		RestaurantVO restaurant=null;
 		try {
-			ResponseEntity<RestaurantVO> responseEntity =restTemplate.exchange("http://RESTAURANT-SERVICE/restaurants/1", HttpMethod.GET, null,new ParameterizedTypeReference<RestaurantVO>() {});
+			ResponseEntity<RestaurantVO> responseEntity =restTemplate.exchange("http://RESTAURANT-SERVICE/restaurants/"+id, HttpMethod.GET, null,new ParameterizedTypeReference<RestaurantVO>() {});
 			restaurant= responseEntity.getBody();
 		} catch (Exception e) {
 			return new ResponseEntity<RestaurantVO>(HttpStatus.INTERNAL_SERVER_ERROR); 
@@ -73,11 +73,20 @@ public class ReservationController {
 	
 	
 	
-	@PostMapping("/add")
-    public ResponseEntity<Integer>add(@RequestBody final TableReservationVO restaurantVO) {
-		Integer id = reservationService.createTableReservation(restaurantVO);
-		return id != null ? new ResponseEntity<Integer>(id, HttpStatus.OK) 
-	            : new ResponseEntity<Integer>(HttpStatus.NO_CONTENT);
+//	@PostMapping("/add")
+	@RequestMapping(value = "/add", headers="Content-Type=application/json", method = RequestMethod.POST)
+    public ResponseEntity<TableReservationVO>add(@RequestBody TableReservationVO tableReservationVO) {
+		TableReservationVO vo = reservationService.createTableReservation(tableReservationVO);
+		return vo != null ? new ResponseEntity<TableReservationVO>(vo, HttpStatus.OK) 
+	            : new ResponseEntity<TableReservationVO>(HttpStatus.NO_CONTENT);
+    }
+	
+	
+	@PostMapping("/update")
+    public ResponseEntity<TableReservationVO>update(@RequestBody TableReservationVO restaurantVO) {
+		TableReservationVO vo = reservationService.createTableReservation(restaurantVO);
+		return vo != null ? new ResponseEntity<TableReservationVO>(vo, HttpStatus.OK) 
+	            : new ResponseEntity<TableReservationVO>(HttpStatus.NO_CONTENT);
     }
 	
 	

@@ -3,7 +3,9 @@ package com.mt.reservation.vo;
 import java.util.Calendar;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Data
 public class TableReservationVO {
 

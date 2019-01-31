@@ -36,7 +36,7 @@ public class TablesController {
 	@Autowired
 	private TablesService service;
 
-	/*@RequestMapping(path = "/{table_id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(path = "/{table_id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<TablesVO> getTableById(@PathVariable("table_id") Integer id) {
 		TablesVO tablesVO;
 		try {
@@ -46,11 +46,10 @@ public class TablesController {
 		}
 		return tablesVO != null ? new ResponseEntity<TablesVO>(tablesVO, HttpStatus.OK) 
 	            : new ResponseEntity<TablesVO>(HttpStatus.NO_CONTENT); 
-	}*/
+	}
 
 	
 	
-//	@RequestMapping(path = "/{table_ids}", method = RequestMethod.GET, produces = "application/json")
 	@RequestMapping(path = "/tableIds", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<List<TablesVO>> getAllTableByIds(@RequestBody TableRequestVO request) {
 		List<TablesVO> tables=null;
@@ -79,11 +78,17 @@ public class TablesController {
 	
 	@PostMapping("/add")
     public ResponseEntity<Integer>add(@RequestBody final TablesVO restaurantVO) {
-		Integer id = service.createTables(restaurantVO);
-		return id != null ? new ResponseEntity<Integer>(id, HttpStatus.OK) 
+		TablesVO vo = service.createTables(restaurantVO);
+		return vo != null ? new ResponseEntity<Integer>(vo.getTableId(), HttpStatus.OK) 
 	            : new ResponseEntity<Integer>(HttpStatus.NO_CONTENT);
     }
 	
+	@PostMapping("/update")
+    public ResponseEntity<TablesVO>update(@RequestBody final TablesVO restaurantVO) {
+		TablesVO vo = service.createTables(restaurantVO);
+		return vo != null ? new ResponseEntity<TablesVO>(vo, HttpStatus.OK) 
+	            : new ResponseEntity<TablesVO>(HttpStatus.NO_CONTENT);
+    }
 	
 	@PostMapping("/delete/{tableId}")
     public ResponseEntity<Boolean> delete(@PathVariable("tableId") final Integer tableId) {

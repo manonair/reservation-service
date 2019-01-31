@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +35,8 @@ public class Tables implements java.io.Serializable {
 	private static final long serialVersionUID = -1022908280713606265L;
 	@Column(name = "TABLE_ID", nullable = false)
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy= GenerationType.AUTO,generator="native")
+	@GenericGenerator(name = "native",strategy = "native")
 	Integer tableId;
 
 	@Column(name = "TABLE_TYPE", length = 255, nullable = false)

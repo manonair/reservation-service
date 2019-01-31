@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,9 +39,10 @@ public class TableReservation implements java.io.Serializable{
 	private static final long serialVersionUID = -1022908280713606265L;
 	
 	
-	@Column(name = "TABLE_RESERVATION_ID", nullable = false)
+//	@Column(name = "TABLE_RESERVATION_ID", nullable = false)
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy= GenerationType.AUTO,generator="native")
+	@GenericGenerator(name = "native",strategy = "native")
 	Integer tableReservationId;
 	/**
 	 */
@@ -61,13 +64,13 @@ public class TableReservation implements java.io.Serializable{
 	String bookingId;
 	
 	
-	/*@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "BOOKING_START")
 	Calendar bookingStart;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "BOOKING_END")
-	Calendar bookingEnd;*/
+	Calendar bookingEnd;
 	
 	
  

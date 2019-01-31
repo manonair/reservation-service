@@ -74,7 +74,7 @@ public class TablesService {
 		return vos;
 	}
 
-	public Integer createTables(TablesVO tablesVO) {
+	public TablesVO createTables(TablesVO tablesVO) {
 		RestaurantVO restaurantVO= tablesVO.getRestaurantVO();
 		Tables entity= tablesMapper.mapVOtoTables(tablesVO);
 		if(null!=restaurantVO) {
@@ -85,9 +85,10 @@ public class TablesService {
 			}		
 		}
 		entity=tablesRepository.saveAndFlush(entity);
-		return entity.getTableId();
+		tablesVO= tablesMapper.maptoTablesVO(entity);
+		return tablesVO;
 	}
-
+	 
 	public Boolean deleteTables(Integer tableId) {
 		tablesRepository.delete(tableId);
 		return true;
