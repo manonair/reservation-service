@@ -18,17 +18,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-/*CREATE TABLE TABLE_RESERVATION (
-		  TABLE_RESERVATION_ID integer PRIMARY KEY,
-		  RESTAURANT_ID integer NOT NULL,
-		  TABLE_ID integer NOT NULL,
-		  USER_ID integer NOT NULL,
-		  STATUS VARCHAR(1),
-		  BOOKING_ID VARCHAR(50),
-		  BOOKING_START TIMESTAMP,
-		  BOOKING_END TIMESTAMP
-		  );
-		 */
 @Entity
 @Table(name = "TABLE_RESERVATION")
 @EqualsAndHashCode(of = "tableReservationId")
@@ -39,7 +28,6 @@ public class TableReservation implements java.io.Serializable{
 	private static final long serialVersionUID = -1022908280713606265L;
 	
 	
-//	@Column(name = "TABLE_RESERVATION_ID", nullable = false)
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO,generator="native")
 	@GenericGenerator(name = "native",strategy = "native")

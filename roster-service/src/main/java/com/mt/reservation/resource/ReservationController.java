@@ -9,8 +9,6 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.mt.reservation.service.ReservationService;
-import com.mt.reservation.vo.RestaurantVO;
+import com.mt.reservation.vo.ReservationVO;
 import com.mt.reservation.vo.TableReservationVO;
 
 
@@ -43,8 +41,8 @@ public class ReservationController {
 	@Autowired
 	ReservationService reservationService;
 
-	@RequestMapping(path = "/{restaurant_id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<RestaurantVO> getDataTransfer(@PathVariable("restaurant_id") Integer id) {
+	/*@RequestMapping(path = "/{restaurant_id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<RestaurantVO> getReservationbyId(@PathVariable("restaurant_id") Integer id) {
 		RestaurantVO restaurant=null;
 		try {
 			ResponseEntity<RestaurantVO> responseEntity =restTemplate.exchange("http://RESTAURANT-SERVICE/restaurants/"+id, HttpMethod.GET, null,new ParameterizedTypeReference<RestaurantVO>() {});
@@ -54,20 +52,44 @@ public class ReservationController {
 		}
 		return restaurant != null ? new ResponseEntity<RestaurantVO>(restaurant, HttpStatus.OK) 
 	            : new ResponseEntity<RestaurantVO>(HttpStatus.NO_CONTENT); 
-		
+	}*/
+	
+	@RequestMapping(path = "/{reservation_id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<ReservationVO> getReservationbyName(@PathVariable("reservation_id") Integer id) {
+		ReservationVO reservation=null;
+		try {
+			reservation = reservationService.findById(id);
+		} catch (Exception e) {
+			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK) 
+	            : new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT); 
+	}
+	
+	
+	@RequestMapping(path = "/search/{reservation_name}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<ReservationVO> getReservationbyName(@PathVariable("reservation_name") String reservationName) {
+		ReservationVO reservation=null;
+		try {
+			reservation = reservationService.findByReservationName(reservationName);
+		} catch (Exception e) {
+			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK) 
+	            : new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT); 
 	}
 
 
 	@RequestMapping(path = "/all", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<TableReservationVO>> getAllReservations() {
-		List<TableReservationVO> reservationVOs=null;
+	public ResponseEntity<List<ReservationVO>> getAllReservations() {
+		List<ReservationVO> reservationVOs=null;
 		try {
 			reservationVOs = reservationService.findAll();
 		} catch (Exception e) {
-			return new ResponseEntity<List<TableReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
+			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
-		return reservationVOs != null ? new ResponseEntity<List<TableReservationVO>>(reservationVOs, HttpStatus.OK) 
-	            : new ResponseEntity<List<TableReservationVO>>(HttpStatus.NO_CONTENT);
+		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK) 
+	            : new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
 		
 	}
 	

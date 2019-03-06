@@ -1,5 +1,6 @@
 package com.mt.reservation.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.mt.reservation.mapper.ReservationMapper;
 import com.mt.reservation.mapper.TableReservationMapper;
 import com.mt.reservation.model.TableReservation;
 import com.mt.reservation.repository.TableReservationRepository;
+import com.mt.reservation.vo.ReservationVO;
 import com.mt.reservation.vo.TableRequestVO;
 import com.mt.reservation.vo.TableReservationVO;
 import com.mt.reservation.vo.TablesVO;
@@ -32,11 +35,14 @@ public class ReservationService {
 
 	@Autowired
 	private TableReservationMapper reservationMapper;
+	
+	@Autowired
+	private ReservationMapper mapper;
 
 	@Autowired
 	RestTemplate restTemplate;
 
-	public List<TableReservationVO> findAll() throws Exception {
+	/*public List<TableReservationVO> findAll() throws Exception {
 		List<TableReservationVO> vos = null;
 		List<TableReservation> reservations = (List<TableReservation>) reservationRepository.findAll();
 		if (!reservations.isEmpty()) {
@@ -54,8 +60,85 @@ public class ReservationService {
 			ResponseEntity<List<TablesVO>> responseEntity = restTemplate
 					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
 			List<TablesVO> tables = responseEntity.getBody();
+			
 			Map<Integer, TablesVO> tableMap = tables.stream()
 					.collect(Collectors.toMap(TablesVO::getTableId, obj -> obj));
+			
+			
+			vos = reservations.stream()
+					.map(reservation -> mapToReservationVO(voMap.get(reservation.getTableReservationId()),
+							tableMap.get(reservation.getTableId())))
+					.collect(Collectors.toList());
+		}
+		return vos;
+	}*/
+
+	public ReservationVO findById(Integer reservationId) throws Exception {
+		ReservationVO vo = null;
+		TableReservation reservation = (TableReservation) reservationRepository.findOne(reservationId);
+		if (null!=reservation) {
+			vo = mapToReservationVO(reservation);
+			TableRequestVO requestVO = new TableRequestVO();
+			requestVO.setIds(Arrays.asList(vo.getTableId()));
+			ParameterizedTypeReference<List<TablesVO>> response = new ParameterizedTypeReference<List<TablesVO>>() {
+			};
+			HttpEntity<TableRequestVO> requestEntity = new HttpEntity<>(requestVO);
+			ResponseEntity<List<TablesVO>> responseEntity = restTemplate
+					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
+			List<TablesVO> tables = responseEntity.getBody();
+			
+			if(!tables.isEmpty() && null!=tables.get(0)) {
+				vo= mapToReservationVO(vo,tables.get(0));
+			}
+		}
+		return vo;
+	}
+	
+	public ReservationVO findByReservationName(String reservationName) throws Exception {
+		ReservationVO vo = null;
+		TableReservation reservation = (TableReservation) reservationRepository.findByReservationName(reservationName);
+		if (null!=reservation) {
+			vo = mapToReservationVO(reservation);
+			TableRequestVO requestVO = new TableRequestVO();
+			requestVO.setIds(Arrays.asList(vo.getTableId()));
+			ParameterizedTypeReference<List<TablesVO>> response = new ParameterizedTypeReference<List<TablesVO>>() {
+			};
+			HttpEntity<TableRequestVO> requestEntity = new HttpEntity<>(requestVO);
+			ResponseEntity<List<TablesVO>> responseEntity = restTemplate
+					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
+			List<TablesVO> tables = responseEntity.getBody();
+			
+			if(!tables.isEmpty() && null!=tables.get(0)) {
+				vo= mapToReservationVO(vo,tables.get(0));
+			}
+		}
+		return vo;
+	}
+	
+	
+	public List<ReservationVO> findAll() throws Exception {
+		List<ReservationVO> vos = null;
+		List<TableReservation> reservations = (List<TableReservation>) reservationRepository.findAll();
+		if (!reservations.isEmpty()) {
+			Map<Integer, ReservationVO> voMap = reservations.stream()
+					.collect(Collectors.toMap(TableReservation::getTableReservationId, obj ->mapToReservationVO(obj)));
+
+			List<Integer> collect = reservations.stream().map(TableReservation::getTableId)
+					.collect(Collectors.toList());
+
+			TableRequestVO requestVO = new TableRequestVO();
+			requestVO.setIds(collect);
+			ParameterizedTypeReference<List<TablesVO>> response = new ParameterizedTypeReference<List<TablesVO>>() {
+			};
+			HttpEntity<TableRequestVO> requestEntity = new HttpEntity<>(requestVO);
+			ResponseEntity<List<TablesVO>> responseEntity = restTemplate
+					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
+			List<TablesVO> tables = responseEntity.getBody();
+			
+			Map<Integer, TablesVO> tableMap = tables.stream()
+					.collect(Collectors.toMap(TablesVO::getTableId, obj -> obj));
+			
+			
 			vos = reservations.stream()
 					.map(reservation -> mapToReservationVO(voMap.get(reservation.getTableReservationId()),
 							tableMap.get(reservation.getTableId())))
@@ -63,7 +146,8 @@ public class ReservationService {
 		}
 		return vos;
 	}
-
+	
+	
 	public TableReservationVO createTableReservation(TableReservationVO tableReservationVO) {
 		TablesVO tablesVO = getTableById(tableReservationVO.getTableId());
 		if (null != tablesVO /* && "A".equalsIgnoreCase(tablesVO.getStatus()) */) {
@@ -125,16 +209,27 @@ public class ReservationService {
 		return true;
 	}
 
-	private TableReservationVO mapToReservationVO(TableReservationVO reservationVO, TablesVO tablesVO) {
-		reservationVO.setRestaurantVO(tablesVO.getRestaurantVO());
-		reservationVO.setTablesVO(tablesVO);
+	private ReservationVO mapToReservationVO(ReservationVO reservationVO, TablesVO tablesVO) {
+		reservationVO.setTableType(tablesVO.getTableType());
+		reservationVO.setTableDesc(tablesVO.getTableDesc());
+		reservationVO.setCapacity( tablesVO.getCapacity());
+		if(null!=tablesVO.getRestaurantVO()) {
+			reservationVO.setRestaurantName( tablesVO.getRestaurantVO().getRestaurantName());
+		}
 		return reservationVO;
 	}
 
-	private TableReservationVO mapToReservationVO(TableReservation reservation) {
+	/*private TableReservationVO mapToReservationVO(TableReservation reservation) {
 		TableReservationVO vo = null;
 		vo = reservationMapper.maptoTableReservationVO(reservation);
 		return vo;
+	}*/
+	
+	private ReservationVO mapToReservationVO(TableReservation reservation) {
+		ReservationVO vo = null;
+		vo = mapper.maptoTableReservationVO(reservation);
+		return vo;
 	}
+
 
 }
