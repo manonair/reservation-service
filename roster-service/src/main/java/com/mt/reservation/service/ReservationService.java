@@ -84,8 +84,9 @@ public class ReservationService {
 			};
 			HttpEntity<TableRequestVO> requestEntity = new HttpEntity<>(requestVO);
 			ResponseEntity<List<TablesVO>> responseEntity = restTemplate
+//					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
 					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
-			List<TablesVO> tables = responseEntity.getBody();
+					List<TablesVO> tables = responseEntity.getBody();
 			
 			if(!tables.isEmpty() && null!=tables.get(0)) {
 				vo= mapToReservationVO(vo,tables.get(0));

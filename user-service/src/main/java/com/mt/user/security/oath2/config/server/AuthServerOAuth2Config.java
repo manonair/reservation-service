@@ -2,6 +2,7 @@ package com.mt.user.security.oath2.config.server;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,6 +25,7 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Import(ServerSecurityConfig.class)
+@EnableEurekaClient
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Autowired

@@ -1,5 +1,7 @@
 package com.mt.user.security.oauth2.resource;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,4 +31,11 @@ public class UserController {
 	public User getUser(@PathVariable("id") long id) {
 		return userService.getUserById(id);
 	}
+	
+	
+	@RequestMapping(path="/userInfo",method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public Principal userInfo(Principal principal){
+		userService.loadUserByUsername(principal.getName());
+        return principal;
+    }
 }
