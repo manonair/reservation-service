@@ -22,8 +22,6 @@ import com.mt.restaurant.service.TablesService;
 import com.mt.restaurant.vo.TableRequestVO;
 import com.mt.restaurant.vo.TablesVO;
 
-
-
 @RestController
 @RequestMapping("/tables")
 @Produces(MediaType.APPLICATION_JSON)

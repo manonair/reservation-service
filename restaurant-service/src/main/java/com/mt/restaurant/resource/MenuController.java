@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mt.restaurant.service.MenuService;
 import com.mt.restaurant.vo.MenuVO;
 
-
-
 @RestController
 @RequestMapping("/menu")
 @Produces(MediaType.APPLICATION_JSON)
