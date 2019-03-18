@@ -9,10 +9,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 @Configuration
 @EnableWebSecurity
@@ -35,5 +38,15 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(userPasswordEncoder);
+    }
+    
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      http.csrf().disable();
+    }
+    
+    @Bean
+    public OAuth2RestTemplate oAuth2RestTemplate(OAuth2ProtectedResourceDetails resource){
+        return new OAuth2RestTemplate(resource);
     }
 }

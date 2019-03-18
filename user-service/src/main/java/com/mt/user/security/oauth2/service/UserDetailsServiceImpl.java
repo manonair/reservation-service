@@ -43,10 +43,15 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
 
  
 
-	public User getUserByUsername(String userName) {
-		// TODO Auto-generated method stub
+	public User getUserByUsername(String userName, String password) throws UsernameNotFoundException{
 		User user= userRepository.findByUsername(userName);
-		return user;
+		BCryptPasswordEncoder bcryptPassword=new BCryptPasswordEncoder();
+		 if(bcryptPassword.matches(password, user.getPassword()) ) {
+			 return user;
+			 
+		 }
+		  throw new UsernameNotFoundException(userName);
+		
 	}
 	
 	public User getUserById(long userId){

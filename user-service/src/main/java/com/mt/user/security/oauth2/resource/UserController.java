@@ -38,4 +38,8 @@ public class UserController {
 		userService.loadUserByUsername(principal.getName());
         return principal;
     }
+	
+	
+
+	
 }

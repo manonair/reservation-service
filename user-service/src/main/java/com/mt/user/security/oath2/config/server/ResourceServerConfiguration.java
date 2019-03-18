@@ -1,9 +1,12 @@
 package com.mt.user.security.oath2.config.server;
 
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -30,11 +33,19 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .antMatchers(HttpMethod.POST, SECURED_PATTERN)
                 .access(SECURED_WRITE_SCOPE)
                 .antMatchers(HttpMethod.GET, SECURED_PATTERN)
                 .access(SECURED_READ_SCOPE)
                 .anyRequest()
                 .authenticated();
+    }
+    
+    
+    
+    @Bean
+    public OAuth2RestTemplate oAuth2RestTemplate(OAuth2ProtectedResourceDetails resource){
+        return new OAuth2RestTemplate(resource);
     }
 }
