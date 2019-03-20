@@ -2,6 +2,8 @@ package com.mt.user.security.oauth2.resource;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mt.user.security.oauth2.model.security.User;
@@ -37,19 +41,27 @@ public class LoginController {
 	@Value("${app.auth.base65}")
 	 private String authorization;
  
-	
-	
-	
-	@RequestMapping(path="/login",method=RequestMethod.POST,consumes  = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<User> getUser(@RequestBody MultiValueMap<String, String> formData) {
+
+	@RequestMapping(path="/login",method=RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<User> getUser(@RequestBody String formData) {
 		User user = null;
 		HttpHeaders headerOut =null;
 		try {
-			String token = getOathTocken(formData);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+
+			// convert JSON string to Map
+			Map<String, String> tmpMap = mapper.readValue(formData, new TypeReference<HashMap<String, String>>(){});
+			for (String key : tmpMap.keySet()) {
+				map.put(key,  Arrays.asList(tmpMap.get(key)));
+			}
+			
+			String token = getOathTocken(map);
 			headerOut = getResponseHeader(token);
 			
-			String userName=formData.getFirst("username").toString();
-			String pwd=formData.getFirst("password").toString();
+			String userName=tmpMap.get("username").toString();
+			String pwd=tmpMap.get("password").toString();
 			if(null!=userName && null!=pwd) {
 				user = userService.getUserByUsername(userName, pwd);
 			} 
@@ -61,11 +73,11 @@ public class LoginController {
 	}
 
 
-	private String getOathTocken(MultiValueMap<String, String> formData) throws IOException {
+	private String getOathTocken(MultiValueMap<String, Object> formData) throws IOException {
 		RestTemplate restTemplate = new RestTemplate();
 		String access_token_url = accessTokenUri;
 		HttpHeaders headers = populateSecureHeader(); 
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(formData,headers);
+		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(formData,headers);
 		ResponseEntity<String> response  = restTemplate.exchange(access_token_url, HttpMethod.POST, request, String.class);
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = mapper.readTree(response.getBody());
