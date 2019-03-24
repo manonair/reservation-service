@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2019-03-19T18:01:53-0500",
+    date = "2019-03-23T09:45:12-0500",
     comments = "version: 1.2.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -21,11 +21,14 @@ public class UserMapperImpl implements UserMapper {
 
         UserVO userVO = new UserVO();
 
-        if ( user.getId() != null ) {
-            userVO.setId( user.getId() );
-        }
+        userVO.setId( user.getId() );
         userVO.setUsername( user.getUsername() );
         userVO.setPassword( user.getPassword() );
+        userVO.setAccountExpired( user.isAccountExpired() );
+        userVO.setAccountLocked( user.isAccountLocked() );
+        userVO.setCredentialsExpired( user.isCredentialsExpired() );
+        userVO.setEnabled( user.isEnabled() );
+        userVO.setAccessToken( user.getAccessToken() );
 
         return userVO;
     }
@@ -41,6 +44,11 @@ public class UserMapperImpl implements UserMapper {
         user.setId( userVO.getId() );
         user.setUsername( userVO.getUsername() );
         user.setPassword( userVO.getPassword() );
+        user.setAccountExpired( userVO.isAccountExpired() );
+        user.setAccountLocked( userVO.isAccountLocked() );
+        user.setCredentialsExpired( userVO.isCredentialsExpired() );
+        user.setEnabled( userVO.isEnabled() );
+        user.setAccessToken( userVO.getAccessToken() );
 
         return user;
     }

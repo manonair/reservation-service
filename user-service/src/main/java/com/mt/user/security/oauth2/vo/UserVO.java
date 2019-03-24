@@ -10,18 +10,26 @@ import lombok.Setter;
 @Setter
 public class UserVO  implements Serializable{
 
-	
-	private long id;
+    private Long id;
+    
+    private String username;
 
-	private String name;
+    private String password;
 
-	private String email;
+    private boolean accountExpired;
 
-	private String mobileNumber;
+    private boolean accountLocked;
 
+    private boolean credentialsExpired;
 
-	private String username;
+    private boolean enabled;
+    
+    private String accessToken;
+    
+    private Long authorityId;
 
-	private String password;
+    private String authorityName;
+    
+    
 
 }

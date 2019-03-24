@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import lombok.EqualsAndHashCode;
@@ -59,6 +60,9 @@ public class User implements UserDetails, Serializable {
 
     @Column(name = "ENABLED")
     private boolean enabled;
+    
+    @Transient
+    private String accessToken;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_AUTHORITIES", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID"))

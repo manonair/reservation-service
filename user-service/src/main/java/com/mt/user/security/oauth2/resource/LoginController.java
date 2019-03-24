@@ -24,8 +24,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mt.user.security.oauth2.model.security.User;
 import com.mt.user.security.oauth2.service.UserDetailsServiceImpl;
+import com.mt.user.security.oauth2.vo.UserVO;
 
  
 
@@ -43,8 +43,8 @@ public class LoginController {
  
 
 	@RequestMapping(path="/login",method=RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<User> getUser(@RequestBody String formData) {
-		User user = null;
+	public ResponseEntity<UserVO> getUser(@RequestBody String formData) {
+		UserVO user = null;
 		HttpHeaders headerOut =null;
 		try {
 			
@@ -64,12 +64,15 @@ public class LoginController {
 			String pwd=tmpMap.get("password").toString();
 			if(null!=userName && null!=pwd) {
 				user = userService.getUserByUsername(userName, pwd);
+				if(null!=user) {
+					user.setAccessToken(token);
+				}
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return  user != null ? new ResponseEntity<User>(user,headerOut, HttpStatus.OK) 
-				: new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+		return  user != null ? new ResponseEntity<UserVO>(user,headerOut, HttpStatus.OK) 
+				: new ResponseEntity<UserVO>(HttpStatus.NO_CONTENT);
 	}
 
 

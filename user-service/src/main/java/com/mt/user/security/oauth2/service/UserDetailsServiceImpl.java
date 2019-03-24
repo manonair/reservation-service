@@ -2,6 +2,9 @@ package com.mt.user.security.oauth2.service;
 
 
  
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,8 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mt.user.security.oauth2.model.security.Authority;
 import com.mt.user.security.oauth2.model.security.User;
 import com.mt.user.security.oauth2.repository.UserRepository;
+import com.mt.user.security.oauth2.vo.UserVO;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService  {
@@ -43,15 +48,30 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
 
  
 
-	public User getUserByUsername(String userName, String password) throws UsernameNotFoundException{
+	public UserVO getUserByUsername(String userName, String password) throws UsernameNotFoundException{
 		User user= userRepository.findByUsername(userName);
 		BCryptPasswordEncoder bcryptPassword=new BCryptPasswordEncoder();
 		 if(bcryptPassword.matches(password, user.getPassword()) ) {
-			 return user;
-			 
+			 UserVO vo =maptoUserVo(user);
+			 return vo;
 		 }
 		  throw new UsernameNotFoundException(userName);
-		
+	}
+	
+	
+	UserVO maptoUserVo(User user){
+		UserVO vo = new UserVO();
+		vo.setId(user.getId());
+		vo.setUsername( user.getUsername());
+		if(null!=user.getAuthorities() && !user.getAuthorities().isEmpty()) {
+			Collection<Authority> authorities=  user.getAuthorities();
+			if(null!=authorities && !authorities.isEmpty()) {
+				Authority authority =authorities.iterator().next();
+				vo.setAuthorityId(authority.getId());
+				vo.setAuthorityName(authority.getAuthority());
+			}
+		}
+		return vo;
 	}
 	
 	public User getUserById(long userId){

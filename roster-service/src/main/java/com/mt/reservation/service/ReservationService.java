@@ -149,6 +149,39 @@ public class ReservationService {
 	}
 	
 	
+	
+	
+	public List<ReservationVO> findReservationsByUser(Integer userId) throws Exception {
+		List<ReservationVO> vos = null;
+		List<TableReservation> reservations = (List<TableReservation>) reservationRepository.findByUserId(userId);
+		if (!reservations.isEmpty()) {
+			Map<Integer, ReservationVO> voMap = reservations.stream()
+					.collect(Collectors.toMap(TableReservation::getTableReservationId, obj ->mapToReservationVO(obj)));
+
+			List<Integer> collect = reservations.stream().map(TableReservation::getTableId)
+					.collect(Collectors.toList());
+
+			TableRequestVO requestVO = new TableRequestVO();
+			requestVO.setIds(collect);
+			ParameterizedTypeReference<List<TablesVO>> response = new ParameterizedTypeReference<List<TablesVO>>() {
+			};
+			HttpEntity<TableRequestVO> requestEntity = new HttpEntity<>(requestVO);
+			ResponseEntity<List<TablesVO>> responseEntity = restTemplate
+					.exchange("http://restaurant-service/tables/tableIds", HttpMethod.POST, requestEntity, response);
+			List<TablesVO> tables = responseEntity.getBody();
+			
+			Map<Integer, TablesVO> tableMap = tables.stream()
+					.collect(Collectors.toMap(TablesVO::getTableId, obj -> obj));
+			
+			
+			vos = reservations.stream()
+					.map(reservation -> mapToReservationVO(voMap.get(reservation.getTableReservationId()),
+							tableMap.get(reservation.getTableId())))
+					.collect(Collectors.toList());
+		}
+		return vos;
+	}
+	
 	public TableReservationVO createTableReservation(TableReservationVO tableReservationVO) {
 		TablesVO tablesVO = getTableById(tableReservationVO.getTableId());
 		if (null != tablesVO /* && "A".equalsIgnoreCase(tablesVO.getStatus()) */) {

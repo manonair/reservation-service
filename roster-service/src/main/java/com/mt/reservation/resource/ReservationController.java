@@ -94,6 +94,19 @@ public class ReservationController {
 		
 	}
 	
+	@PreAuthorize("#oauth2.hasScope('read')")
+	@RequestMapping(path = "/user/{user_id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<ReservationVO>> getAllReservationsByUser(@PathVariable("user_id") Integer userId) {
+		List<ReservationVO> reservationVOs=null;
+		try {
+			reservationVOs = reservationService.findReservationsByUser(userId);
+		} catch (Exception e) {
+			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK) 
+	            : new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
+		
+	}
 	
 	
 //	@PostMapping("/add")

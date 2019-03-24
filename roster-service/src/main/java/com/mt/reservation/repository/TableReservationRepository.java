@@ -14,4 +14,8 @@ public interface TableReservationRepository extends CrudRepository<TableReservat
 	@Query("from TableReservation t  where t.bookingId=:reservationName")
     public Iterable<TableReservation> findByReservationName(@Param("reservationName")String reservationName);
 	
+	
+	@Query("from TableReservation t  where t.userId=:userId")
+    public Iterable<TableReservation> findByUserId(@Param("userId")Integer userId);
+	
 }

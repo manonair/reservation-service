@@ -2,17 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   
   
-  <!-- <parent>
-    <groupId>com.mt</groupId>
-    <artifactId>reservation-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent> -->
-  
   <parent>
     <groupId>com.mt</groupId>
     <artifactId>reservation-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  
+ 
   <artifactId>user-service</artifactId>
   <name>user-service</name>
   <description>user-service</description>
