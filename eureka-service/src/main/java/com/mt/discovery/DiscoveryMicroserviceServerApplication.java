@@ -26,7 +26,7 @@ public class DiscoveryMicroserviceServerApplication {
 	}*/
 
 	
-	@Bean
+	/*@Bean
     OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext, OAuth2ProtectedResourceDetails details) {
         return new OAuth2RestTemplate(details, oauth2ClientContext);
     }
@@ -34,7 +34,6 @@ public class DiscoveryMicroserviceServerApplication {
     @Bean
     RequestDumperFilter requestDumperFilter() {
     	return new RequestDumperFilter();
-    }
-    
+    }*/
     
 }

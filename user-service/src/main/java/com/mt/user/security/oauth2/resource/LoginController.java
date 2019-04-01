@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.HeaderParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +29,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mt.user.security.oauth2.service.UserDetailsServiceImpl;
 import com.mt.user.security.oauth2.vo.UserVO;
+
+
 
  
 
@@ -38,16 +43,12 @@ public class LoginController {
 	@Value("${security.oauth2.client.accessTokenUri}")
 	 private String accessTokenUri;
 	
-	@Value("${app.auth.base65}")
-	 private String authorization;
- 
 
 	@RequestMapping(path="/login",method=RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<UserVO> getUser(@RequestBody String formData) {
+	public ResponseEntity<UserVO> getUser(@RequestBody String formData, @RequestHeader("Authorization") String authString) {
 		UserVO user = null;
 		HttpHeaders headerOut =null;
 		try {
-			
 			ObjectMapper mapper = new ObjectMapper();
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
@@ -57,7 +58,7 @@ public class LoginController {
 				map.put(key,  Arrays.asList(tmpMap.get(key)));
 			}
 			
-			String token = getOathTocken(map);
+			String token = getOathTocken(map,authString);
 			headerOut = getResponseHeader(token);
 			
 			String userName=tmpMap.get("username").toString();
@@ -72,14 +73,13 @@ public class LoginController {
 			e.printStackTrace();
 		}
 		return  user != null ? new ResponseEntity<UserVO>(user,headerOut, HttpStatus.OK) 
-				: new ResponseEntity<UserVO>(HttpStatus.NO_CONTENT);
+				: new ResponseEntity<UserVO>(HttpStatus.NOT_ACCEPTABLE);
 	}
 
-
-	private String getOathTocken(MultiValueMap<String, Object> formData) throws IOException {
+	private String getOathTocken(MultiValueMap<String, Object> formData, String authString) throws IOException {
 		RestTemplate restTemplate = new RestTemplate();
 		String access_token_url = accessTokenUri;
-		HttpHeaders headers = populateSecureHeader(); 
+		HttpHeaders headers = populateSecureHeader(authString); 
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(formData,headers);
 		ResponseEntity<String> response  = restTemplate.exchange(access_token_url, HttpMethod.POST, request, String.class);
 		ObjectMapper mapper = new ObjectMapper();
@@ -97,10 +97,10 @@ public class LoginController {
 	}
 
 
-	private HttpHeaders populateSecureHeader() {
+	private HttpHeaders populateSecureHeader(String authString) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.add("Authorization", authorization );
+		headers.add("Authorization", authString );
 		headers.add("content-type", "application/x-www-form-urlencoded" ); 
 		headers.add("No-Auth", "True" );
 		return headers;
