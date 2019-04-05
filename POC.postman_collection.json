@@ -1,0 +1,247 @@
+{
+	"id": "b4225a08-182b-909c-de03-1091dc5ef919",
+	"name": "POC",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"name": "Reservation",
+			"description": "",
+			"collectionId": "b4225a08-182b-909c-de03-1091dc5ef919",
+			"order": [
+				"e1827556-88f1-1aba-0485-030a1f9bd61c",
+				"7120a5c5-c78d-01cd-6726-1ee0f8650fc8",
+				"d91fa3e3-7a59-393e-06e7-207970adeb8d",
+				"cbefda65-87fb-bf9f-6148-55a5b8cc34cf",
+				"e2737d9b-72ff-1321-d2a6-61a8ecc2258b"
+			],
+			"owner": 0,
+			"folders_order": [],
+			"id": "09c68633-eabd-4c83-77c9-c91c614c1a6d"
+		}
+	],
+	"folders_order": [
+		"09c68633-eabd-4c83-77c9-c91c614c1a6d"
+	],
+	"timestamp": 1546482334534,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "7120a5c5-c78d-01cd-6726-1ee0f8650fc8",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:1111/api/roster-microservice/reservation/1",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "b4225a08-182b-909c-de03-1091dc5ef919",
+			"data": null,
+			"dataMode": "params",
+			"name": "http://localhost:1111/api/roster-microservice/reservation/1",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1548893963419,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "09c68633-eabd-4c83-77c9-c91c614c1a6d"
+		},
+		{
+			"id": "cbefda65-87fb-bf9f-6148-55a5b8cc34cf",
+			"headers": "",
+			"headerData": [],
+			"url": "",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "b4225a08-182b-909c-de03-1091dc5ef919",
+			"data": null,
+			"dataMode": "params",
+			"name": "POC-Oath",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1546482335504,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"isFromCollection": true,
+			"collectionRequestId": "cbefda65-87fb-bf9f-6148-55a5b8cc34cf",
+			"folder": "09c68633-eabd-4c83-77c9-c91c614c1a6d"
+		},
+		{
+			"id": "d91fa3e3-7a59-393e-06e7-207970adeb8d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:1111/api/roster-microservice/reservation/all",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "b4225a08-182b-909c-de03-1091dc5ef919",
+			"data": [],
+			"dataMode": "raw",
+			"name": "http://localhost:1111/api/roster-microservice/reservation/all",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1548893975262,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "09c68633-eabd-4c83-77c9-c91c614c1a6d",
+			"rawModeData": ""
+		},
+		{
+			"id": "e1827556-88f1-1aba-0485-030a1f9bd61c",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:2222/reservation/add",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "b4225a08-182b-909c-de03-1091dc5ef919",
+			"data": [],
+			"dataMode": "raw",
+			"name": "http://localhost:2222/reservation/add",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1548893953399,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "09c68633-eabd-4c83-77c9-c91c614c1a6d",
+			"rawModeData": "\r\n\t{\r\n\t\t\"tableReservationId\":null, \r\n\t\t\"restaurantName\" :null, \r\n\t\t\"restaurantId\" :1, \r\n\t\t\"tableId\" :1, \r\n\t\t\"userId\" :1, \r\n\t\t\"status\" :\"A\", \r\n\t\t\"bookingId\" :null, \r\n\t\t\"bookingStart\" :null, \r\n\t\t\"bookingEnd\" :null, \r\n\t\t\"tablesVO\" :null, \r\n\t\t\"restaurantVO\" :null, \r\n\t\t\"userVO\" :null\r\n\t}\r\n"
+		},
+		{
+			"id": "e2737d9b-72ff-1321-d2a6-61a8ecc2258b",
+			"headers": "Authorization: Basic c3ByaW5nLXNlY3VyaXR5LW9hdXRoMi1yZWFkLXdyaXRlLWNsaWVudDpzcHJpbmctc2VjdXJpdHktb2F1dGgyLXJlYWQtd3JpdGUtY2xpZW50LXBhc3N3b3JkMTIzNA==\n//grant_type: password\n//username: admin\n//password: admin1234\n//client_id: spring-security-oauth2-read-write-client\n//Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Basic c3ByaW5nLXNlY3VyaXR5LW9hdXRoMi1yZWFkLXdyaXRlLWNsaWVudDpzcHJpbmctc2VjdXJpdHktb2F1dGgyLXJlYWQtd3JpdGUtY2xpZW50LXBhc3N3b3JkMTIzNA==",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "username",
+					"value": "admin",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "password",
+					"value": "admin1234",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "client_id",
+					"value": "spring-security-oauth2-read-write-client",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "authorization",
+					"value": "Basic c3ByaW5nLXNlY3VyaXR5LW9hdXRoMi1yZWFkLXdyaXRlLWNsaWVudDpzcHJpbmctc2VjdXJpdHktb2F1dGgyLXJlYWQtd3JpdGUtY2xpZW50LXBhc3N3b3JkMTIzNA==",
+					"description": "",
+					"enabled": false
+				}
+			],
+			"url": "http://localhost:8099/oauth/token",
+			"folder": "09c68633-eabd-4c83-77c9-c91c614c1a6d",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "admin",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "admin1234",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "spring-security-oauth2-read-write-client",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "basicAuth",
+			"helperAttributes": {
+				"id": "basic",
+				"username": "spring-security-oauth2-read-write-client",
+				"password": "spring-security-oauth2-read-write-client-password1234",
+				"saveToRequest": true
+			},
+			"time": 1546482947962,
+			"name": "POC-Oath",
+			"description": "",
+			"collectionId": "b4225a08-182b-909c-de03-1091dc5ef919",
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "e2737d9b-72ff-1321-d2a6-61a8ecc2258b"
+		}
+	]
+}

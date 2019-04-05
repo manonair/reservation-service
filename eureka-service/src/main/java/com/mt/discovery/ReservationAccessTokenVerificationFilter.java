@@ -1,26 +1,10 @@
 package com.mt.discovery;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 
 
 
 public class ReservationAccessTokenVerificationFilter /*extends OncePerRequestFilter*/ {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationAccessTokenVerificationFilter.class);
 
 	/*@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -63,22 +47,5 @@ public class ReservationAccessTokenVerificationFilter /*extends OncePerRequestFi
 }
 
  
-class OauthConfig {
-    @Value("${security.oauth2.resource.token-info-uri:/auth/**}")
-    private String Uri;
 
-    @Value("${security.jwt.header:Authorization}")
-    private String header;
-
-    @Value("${security.jwt.prefix:Bearer }")
-    private String prefix;
-
-    @Value("${security.jwt.expiration:#{24*60*60}}")
-    private int expiration;
-
-    @Value("${security.jwt.secret:JwtSecretKey}")
-    private String secret;
-	
-    // getters ...
-}
 

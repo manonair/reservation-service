@@ -59,11 +59,7 @@
 		</dependency>
 
 
-		<dependency>
-   <artifactId>spring-security-oauth2</artifactId>
-   <groupId>spring-security-oauth2</groupId>
-   <version>2.2.1.RELEASE</version>
-</dependency>
+	 
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>

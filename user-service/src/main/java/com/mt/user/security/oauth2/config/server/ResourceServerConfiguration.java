@@ -28,8 +28,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers()
-		        .antMatchers(SECURED_PATTERN, "/oauth/**")
+        http
+        .csrf().disable()
+        .requestMatchers()
+		        .antMatchers(SECURED_PATTERN, "/oauth/**", "/eureka/**", "/login/**")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").permitAll()

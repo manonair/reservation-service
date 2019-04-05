@@ -24,116 +24,116 @@ import com.mt.reservation.service.ReservationService;
 import com.mt.reservation.vo.ReservationVO;
 import com.mt.reservation.vo.TableReservationVO;
 
-
-
 @RestController
 @RequestMapping("/reservation")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ReservationController {
 
-
 	private Logger LOGGER = LoggerFactory.getLogger(ReservationController.class);
 
 	@Autowired
-    RestTemplate restTemplate;
-	
-	
+	RestTemplate restTemplate;
+
 	@Autowired
 	ReservationService reservationService;
 
-	/*@RequestMapping(path = "/{restaurant_id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<RestaurantVO> getReservationbyId(@PathVariable("restaurant_id") Integer id) {
-		RestaurantVO restaurant=null;
-		try {
-			ResponseEntity<RestaurantVO> responseEntity =restTemplate.exchange("http://RESTAURANT-SERVICE/restaurants/"+id, HttpMethod.GET, null,new ParameterizedTypeReference<RestaurantVO>() {});
-			restaurant= responseEntity.getBody();
-		} catch (Exception e) {
-			return new ResponseEntity<RestaurantVO>(HttpStatus.INTERNAL_SERVER_ERROR); 
-		}
-		return restaurant != null ? new ResponseEntity<RestaurantVO>(restaurant, HttpStatus.OK) 
-	            : new ResponseEntity<RestaurantVO>(HttpStatus.NO_CONTENT); 
-	}*/
-	
+	/*
+	 * @RequestMapping(path = "/{restaurant_id}", method = RequestMethod.GET,
+	 * produces = "application/json") public ResponseEntity<RestaurantVO>
+	 * getReservationbyId(@PathVariable("restaurant_id") Integer id) { RestaurantVO
+	 * restaurant=null; try { ResponseEntity<RestaurantVO> responseEntity
+	 * =restTemplate.exchange("http://RESTAURANT-SERVICE/restaurants/"+id,
+	 * HttpMethod.GET, null,new ParameterizedTypeReference<RestaurantVO>() {});
+	 * restaurant= responseEntity.getBody(); } catch (Exception e) { return new
+	 * ResponseEntity<RestaurantVO>(HttpStatus.INTERNAL_SERVER_ERROR); } return
+	 * restaurant != null ? new ResponseEntity<RestaurantVO>(restaurant,
+	 * HttpStatus.OK) : new ResponseEntity<RestaurantVO>(HttpStatus.NO_CONTENT); }
+	 */
+
 	@RequestMapping(path = "/{reservation_id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<ReservationVO> getReservationbyName(@PathVariable("reservation_id") Integer id) {
-		ReservationVO reservation=null;
+		ReservationVO reservation = null;
 		try {
 			reservation = reservationService.findById(id);
 		} catch (Exception e) {
-			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR); 
+			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK) 
-	            : new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT); 
+		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK)
+				: new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT);
 	}
-	
-	
+
 	@RequestMapping(path = "/search/{reservation_name}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<ReservationVO> getReservationbyName(@PathVariable("reservation_name") String reservationName) {
-		ReservationVO reservation=null;
+	public ResponseEntity<ReservationVO> getReservationbyName(
+			@PathVariable("reservation_name") String reservationName) {
+		ReservationVO reservation = null;
 		try {
 			reservation = reservationService.findByReservationName(reservationName);
 		} catch (Exception e) {
-			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR); 
+			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK) 
-	            : new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT); 
+		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK)
+				: new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT);
 	}
 
-	@PreAuthorize("#oauth2.hasScope('read')")
 	@RequestMapping(path = "/all", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<ReservationVO>> getAllReservations() {
-		List<ReservationVO> reservationVOs=null;
+		List<ReservationVO> reservationVOs = null;
 		try {
 			reservationVOs = reservationService.findAll();
 		} catch (Exception e) {
-			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
+			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK) 
-	            : new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
-		
+		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK)
+				: new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
+
 	}
-	
-	@PreAuthorize("#oauth2.hasScope('read')")
+
 	@RequestMapping(path = "/user/{user_id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<ReservationVO>> getAllReservationsByUser(@PathVariable("user_id") Integer userId) {
-		List<ReservationVO> reservationVOs=null;
+		List<ReservationVO> reservationVOs = null;
 		try {
 			reservationVOs = reservationService.findReservationsByUser(userId);
 		} catch (Exception e) {
-			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR); 
+			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK) 
-	            : new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
-		
+		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK)
+				: new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
+
 	}
-	
-	
-//	@PostMapping("/add")
-	@RequestMapping(value = "/add", headers="Content-Type=application/json", method = RequestMethod.POST)
-    public ResponseEntity<TableReservationVO>add(@RequestBody TableReservationVO tableReservationVO) {
+
+	@RequestMapping(path = "/tables", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<ReservationVO>> getAllTablesToReserve() {
+		List<ReservationVO> reservationVOs = null;
+		try {
+			reservationVOs = reservationService.findAvailableTables();
+		} catch (Exception e) {
+			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK)
+				: new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
+
+	}
+
+	@RequestMapping(value = "/add", headers = "Content-Type=application/json", method = RequestMethod.POST)
+	public ResponseEntity<TableReservationVO> add(@RequestBody TableReservationVO tableReservationVO) {
 		TableReservationVO vo = reservationService.createTableReservation(tableReservationVO);
-		return vo != null ? new ResponseEntity<TableReservationVO>(vo, HttpStatus.OK) 
-	            : new ResponseEntity<TableReservationVO>(HttpStatus.NO_CONTENT);
-    }
-	
-	
+		return vo != null ? new ResponseEntity<TableReservationVO>(vo, HttpStatus.OK)
+				: new ResponseEntity<TableReservationVO>(HttpStatus.NO_CONTENT);
+	}
+
 	@PostMapping("/update")
-    public ResponseEntity<TableReservationVO>update(@RequestBody TableReservationVO restaurantVO) {
+	public ResponseEntity<TableReservationVO> update(@RequestBody TableReservationVO restaurantVO) {
 		TableReservationVO vo = reservationService.createTableReservation(restaurantVO);
-		return vo != null ? new ResponseEntity<TableReservationVO>(vo, HttpStatus.OK) 
-	            : new ResponseEntity<TableReservationVO>(HttpStatus.NO_CONTENT);
-    }
-	
-	
+		return vo != null ? new ResponseEntity<TableReservationVO>(vo, HttpStatus.OK)
+				: new ResponseEntity<TableReservationVO>(HttpStatus.NO_CONTENT);
+	}
+
 	@PostMapping("/delete/{reservationId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("reservationId") final Integer reservationId) {
-        Boolean status = reservationService.deleteTableReservation(reservationId);
-        return status != null ? new ResponseEntity<Boolean>(status, HttpStatus.OK) 
-	            : new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
-    }
-	 
-	
-	
+	public ResponseEntity<Boolean> delete(@PathVariable("reservationId") final Integer reservationId) {
+		Boolean status = reservationService.deleteTableReservation(reservationId);
+		return status != null ? new ResponseEntity<Boolean>(status, HttpStatus.OK)
+				: new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
+	}
 
 }
