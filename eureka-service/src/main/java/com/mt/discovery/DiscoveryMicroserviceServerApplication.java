@@ -19,17 +19,6 @@ public class DiscoveryMicroserviceServerApplication {
 		SpringApplication.run(DiscoveryMicroserviceServerApplication.class, args);
 	}
 
-	/*@Bean
-	OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
-			OAuth2ProtectedResourceDetails details) {
-		return new OAuth2RestTemplate(details, oauth2ClientContext);
-	}*/
-
-	
-	/*@Bean
-    OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext, OAuth2ProtectedResourceDetails details) {
-        return new OAuth2RestTemplate(details, oauth2ClientContext);
-    }*/
 
     @Bean
     RequestDumperFilter requestDumperFilter() {

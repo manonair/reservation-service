@@ -34,14 +34,14 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		        .antMatchers(SECURED_PATTERN, "/oauth/**", "/eureka/**", "/login/**")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/**").permitAll()
+                .antMatchers("/oauth/**", "/secured/**").permitAll()
                 .antMatchers("/login/**").permitAll()
-                .antMatchers(HttpMethod.POST, SECURED_PATTERN)
+                /*.antMatchers(HttpMethod.POST, SECURED_PATTERN)
                 .access(SECURED_WRITE_SCOPE)
                 .antMatchers(HttpMethod.GET, SECURED_PATTERN)
                 .access(SECURED_READ_SCOPE)
                 .anyRequest()
-                .authenticated();
+                .authenticated()*/;
     }
     
     

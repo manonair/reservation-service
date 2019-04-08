@@ -1,5 +1,6 @@
 package com.mt.reservation.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -184,12 +185,22 @@ public class ReservationService {
 				entity.setStatus("B");
 				tablesVO.setStatus("B");
 			}
+			
+			String pattern = "yyyy-MM-dd HH:mm:ss";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+			String date = simpleDateFormat.format(tableReservationVO.getBookingStart().getTime());
+			String dateEnd = simpleDateFormat.format(tableReservationVO.getBookingEnd().getTime());
+			
+			System.out.println("Dates: "+date + " && "+dateEnd);
 
+			
+			
 			if (StringUtils.isBlank(tableReservationVO.getBookingId())) {
 				String bookingId = StringUtils.rightPad(tableReservationVO.getTableId() + "_"
 						+ tableReservationVO.getRestaurantId() + "_" + System.currentTimeMillis(), 10, '0');
 				entity.setBookingId(bookingId);
 			}
+			
 			entity = reservationRepository.save(entity);
 			// update DAte
 
@@ -259,6 +270,8 @@ public class ReservationService {
 		reservationVO.setTableDesc(tablesVO.getTableDesc());
 		reservationVO.setCapacity(tablesVO.getCapacity());
 		reservationVO.setStatus(tablesVO.getStatus());
+		reservationVO.setBookingStart( tablesVO.getBookingStart());
+		reservationVO.setBookingEnd( tablesVO.getBookingEnd());
 		if (null != tablesVO.getRestaurantVO()) {
 			reservationVO.setRestaurantName(tablesVO.getRestaurantVO().getRestaurantName());
 			reservationVO.setRestaurantId(tablesVO.getRestaurantVO().getRestaurantId());

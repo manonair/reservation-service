@@ -11,11 +11,11 @@ import com.mt.user.security.oauth2.model.security.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT DISTINCT user FROM User user " +
-            "INNER JOIN FETCH user.authorities AS authorities " +
-            "WHERE user.username = :username")
+    @Query("SELECT DISTINCT user FROM User user  INNER JOIN FETCH user.authorities AS authorities WHERE user.username = :username")
     User findByUsername(@Param("username") String username);
     
+    @Query("SELECT DISTINCT user FROM User user  INNER JOIN FETCH user.authorities AS authorities WHERE user.email = :email")
+    User findByEmail(@Param("email") String email);
     
    
 }
