@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class SimpleCorsFilter implements Filter {
 
 	@Override
