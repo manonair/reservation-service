@@ -25,16 +25,38 @@ public class ResourceApplication extends ResourceServerConfigurerAdapter {
     
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers()
-		        .antMatchers( "/reservation/**")
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/reservation/**").access("#oauth2.hasScope('read')")
-                .antMatchers(HttpMethod.POST, "/reservation/**").access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.POST, SECURED_PATTERN)
-                .access(SECURED_WRITE_SCOPE)
-                .antMatchers(HttpMethod.GET, SECURED_PATTERN)
-                .access(SECURED_READ_SCOPE);
+        
+    	http.requestMatchers()
+        .antMatchers( "/reservation/**")
+        .and()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.GET, "/reservation/**").access("#oauth2.hasScope('read')")
+        .antMatchers(HttpMethod.POST, "/reservation/**").access("#oauth2.hasScope('write')")
+        .antMatchers(HttpMethod.POST, SECURED_PATTERN)
+        .access(SECURED_WRITE_SCOPE)
+        .antMatchers(HttpMethod.GET, SECURED_PATTERN)
+        .access(SECURED_READ_SCOPE);
+
+        
+       /* http.requestMatchers()
+        .antMatchers( "/reservation/**")
+        .and()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.GET, "/reservation/**").access("#oauth2.hasScope('read')")
+        .antMatchers(HttpMethod.POST, "/reservation/**").access("#oauth2.hasScope('write')")
+        .antMatchers(HttpMethod.POST, SECURED_PATTERN)
+        .access(SECURED_WRITE_SCOPE)
+        .antMatchers(HttpMethod.GET, SECURED_PATTERN)
+        .access(SECURED_READ_SCOPE)
+        .and()
+        .cors()
+        .and()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        .and()
+        .csrf()
+        .disable();*/
+        
     }
     
     /*@Primary

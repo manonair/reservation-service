@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +33,8 @@ import com.mt.user.security.oauth2.vo.UserVO;
 
 
 
- 
-
-@RestController
+// 
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:1111"},maxAge = 4800) @RestController
 public class LoginController {
 
 	@Autowired

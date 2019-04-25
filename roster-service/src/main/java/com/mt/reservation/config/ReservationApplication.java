@@ -19,8 +19,8 @@ public class ReservationApplication
 	}
 
 	
-	 /*@Bean
+	 @Bean
 	  public SimpleCorsFilter simpleCorsFilter() {
 	    return new SimpleCorsFilter();
-	  }*/
+	  }
 }

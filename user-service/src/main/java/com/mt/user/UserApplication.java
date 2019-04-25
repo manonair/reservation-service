@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
+import com.mt.user.security.oauth2.config.server.SimpleCorsFilter;
+
 
 @EnableEurekaClient
 @SpringBootApplication
@@ -14,10 +16,10 @@ public class UserApplication {
 		SpringApplication.run(UserApplication.class, args);
 	}
 	
-	/*@Bean
+	@Bean
 	  public SimpleCorsFilter simpleCorsFilter() {
 	    return new SimpleCorsFilter();
-	  }*/
+	  }
 
 }
 

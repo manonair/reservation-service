@@ -26,10 +26,4 @@ public class DiscoveryMicroserviceServerApplication {
     	return new RequestDumperFilter();
     }
     
-    
-    @Bean
-	  public SimpleCorsFilter simpleCorsFilter() {
-	    return new SimpleCorsFilter();
-	  }
-    
 }

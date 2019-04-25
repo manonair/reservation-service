@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ import com.mt.reservation.vo.TableReservationVO;
 @RequestMapping("/reservation")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+//@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:1111"},maxAge = 4800) 
 public class ReservationController {
 
 	private Logger LOGGER = LoggerFactory.getLogger(ReservationController.class);
@@ -38,29 +40,22 @@ public class ReservationController {
 	@Autowired
 	ReservationService reservationService;
 
-	/*
-	 * @RequestMapping(path = "/{restaurant_id}", method = RequestMethod.GET,
-	 * produces = "application/json") public ResponseEntity<RestaurantVO>
-	 * getReservationbyId(@PathVariable("restaurant_id") Integer id) { RestaurantVO
-	 * restaurant=null; try { ResponseEntity<RestaurantVO> responseEntity
-	 * =restTemplate.exchange("http://RESTAURANT-SERVICE/restaurants/"+id,
-	 * HttpMethod.GET, null,new ParameterizedTypeReference<RestaurantVO>() {});
-	 * restaurant= responseEntity.getBody(); } catch (Exception e) { return new
-	 * ResponseEntity<RestaurantVO>(HttpStatus.INTERNAL_SERVER_ERROR); } return
-	 * restaurant != null ? new ResponseEntity<RestaurantVO>(restaurant,
-	 * HttpStatus.OK) : new ResponseEntity<RestaurantVO>(HttpStatus.NO_CONTENT); }
-	 */
 
 	@RequestMapping(path = "/{reservation_id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<ReservationVO> getReservationbyName(@PathVariable("reservation_id") Integer id) {
+		ResponseEntity<ReservationVO> response;
+		
 		ReservationVO reservation = null;
 		try {
 			reservation = reservationService.findById(id);
 		} catch (Exception e) {
 			return new ResponseEntity<ReservationVO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK)
+		response= reservation != null ? new ResponseEntity<ReservationVO>(reservation, HttpStatus.OK)
 				: new ResponseEntity<ReservationVO>(HttpStatus.NO_CONTENT);
+		response.getHeaders().set("Access-Control-Allow-Origin", "*");
+        response.getHeaders().set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")  ;
+		return response;
 	}
 
 	@RequestMapping(path = "/search/{reservation_name}", method = RequestMethod.GET, produces = "application/json")
@@ -104,15 +99,18 @@ public class ReservationController {
 
 	@RequestMapping(path = "/tables", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<ReservationVO>> getAllTablesToReserve() {
+		ResponseEntity<List<ReservationVO>> response;
 		List<ReservationVO> reservationVOs = null;
 		try {
 			reservationVOs = reservationService.findAvailableTables();
 		} catch (Exception e) {
 			return new ResponseEntity<List<ReservationVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK)
+		response=reservationVOs != null ? new ResponseEntity<List<ReservationVO>>(reservationVOs, HttpStatus.OK)
 				: new ResponseEntity<List<ReservationVO>>(HttpStatus.NO_CONTENT);
-
+		/*response.getHeaders().set("Access-Control-Allow-Origin", "*");
+        response.getHeaders().set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")  ;*/
+		return response;
 	}
 
 	@RequestMapping(value = "/add", headers = "Content-Type=application/json", method = RequestMethod.POST)
